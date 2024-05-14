@@ -1,0 +1,30 @@
+﻿
+@using eCommerceSite.Data;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="d-flex flex-row h-100">
+
+    <div class="offcanvas offcanvas-start show offcanvas-category h-100" data-bs-keyboard="false" tabindex="-1" data-bs-scroll="true" data-bs-backdrop="false" id="categories" aria-labelledby="categoriesLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="categories">Categories</h5>
+        </div>
+        <div class="offcanvas-body">
+            @{
+                foreach (int i in Enum.GetValues(typeof(Categories)))
+                {
+                    <a href="@Url.Action("Index", "Shop", new {id = i})">@Enum.GetName(typeof(Categories), i)</a>
+                    <br />
+                }
+            }
+        </div>
+    </div>
+
+
+    <div class="container overflow-auto">
+        <p>hi</p>
+    </div>
+</div>
