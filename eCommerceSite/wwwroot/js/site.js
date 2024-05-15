@@ -3,6 +3,36 @@
 
 // Write your JavaScript code.
 
-$("div.category-offcanvas").css({ "top": $("header").height() })
+const headerHeight = $("header").height();
+const categoryOffcanvasHeight = window.innerHeight;
+$("div.category-offcanvas").css({ "height": categoryOffcanvasHeight })
 
-$("div.shop-container").css({ "margin-left": $("div.category-offcanvas").width() })
+//$("div.shop-container").css({ "margin-left": $("div.category-offcanvas").width() })
+
+
+
+// add profile partial view to index.cshtml
+$('#profile').load("/Shop/ProfilePartial")
+
+
+
+// back to top button
+let mybutton = document.getElementById("btn-back-to-top");
+window.onscroll = function () {
+    scrollFunction();
+};
+function scrollFunction() {
+    if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+    ) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+}
+mybutton.addEventListener("click", backToTop);
+function backToTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}

@@ -22,5 +22,10 @@ namespace eCommerceSite.Controllers
             return View(await DbContext.Products.Where(p => p.Category == cat).ToListAsync());
         }
 
+        public IActionResult ProfilePartial()
+        {
+            return PartialView("_Profile");
+        }
+
     }
 }
