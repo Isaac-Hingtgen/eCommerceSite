@@ -27,5 +27,10 @@ namespace eCommerceSite.Controllers
             return PartialView("_Profile");
         }
 
+        public IActionResult CartPartial()
+        {
+            return PartialView("_Cart");
+        }
+
     }
 }

@@ -10,10 +10,9 @@ $("div.category-offcanvas").css({ "height": categoryOffcanvasHeight })
 //$("div.shop-container").css({ "margin-left": $("div.category-offcanvas").width() })
 
 
-
-// add profile partial view to index.cshtml
-$('#profile').load("/Shop/ProfilePartial")
-
+// add profile and cart partial view to _Layout.cshtml
+$('#modal1').load("/Shop/ProfilePartial")
+$('#modal2').load("/Shop/CartPartial")
 
 
 // back to top button
@@ -23,8 +22,8 @@ window.onscroll = function () {
 };
 function scrollFunction() {
     if (
-        document.body.scrollTop > 20 ||
-        document.documentElement.scrollTop > 20
+        document.body.scrollTop > headerHeight ||
+        document.documentElement.scrollTop > headerHeight
     ) {
         mybutton.style.display = "block";
     } else {
@@ -33,6 +32,7 @@ function scrollFunction() {
 }
 mybutton.addEventListener("click", backToTop);
 function backToTop() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    $("html, body").animate({
+        scrollTop: 0
+    }, 150, "swing")
 }
