@@ -1,17 +1,25 @@
 ﻿using eCommerceSite.Data;
+using eCommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eCommerceSite.Controllers
 {
     public class ShopController : Controller
     {
-        public IActionResult Index(int? id = null)
+        private AppDbContext DbContext { get; }
+        public ShopController(AppDbContext dbContext)
         {
-            if (id == null) return View();
-            Categories cat = (Categories)id;
-            // TODO: only get models of category
-            Console.WriteLine("Category selected");
-            return View();
+            DbContext = dbContext;
+        }
+
+
+        public async Task<IActionResult> Products(string? id = null)
+        {
+            if (id == null) return View(await DbContext.Products.ToListAsync());
+            Categories cat = Enum.Parse<Categories>(id);
+            Console.WriteLine("Category selected: " + id);
+            return View(await DbContext.Products.Where(p => p.Category == cat).ToListAsync());
         }
 
     }
