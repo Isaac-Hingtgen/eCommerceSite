@@ -11,8 +11,8 @@ $("div.category-offcanvas").css({ "height": categoryOffcanvasHeight })
 
 
 // add profile and cart partial view to _Layout.cshtml
-$('#modal1').load("/Shop/ProfilePartial")
-$('#modal2').load("/Shop/CartPartial")
+$('#profile').load("/Shop/ProfilePartial")
+$('#cart').load("/Shop/CartPartial")
 
 
 // back to top button
@@ -36,3 +36,6 @@ function backToTop() {
         scrollTop: 0
     }, 150, "swing")
 }
+
+
+

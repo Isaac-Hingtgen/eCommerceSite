@@ -1,8 +1,7 @@
-﻿
-using eCommerceSite.Data;
+﻿using eCommerceSite.Data;
 using System.ComponentModel.DataAnnotations;
 
-namespace eCommerceSite.Models
+namespace eCommerceSite.Models.Entities
 {
     public class Product : IComparable<Product>
     {
@@ -16,7 +15,7 @@ namespace eCommerceSite.Models
         public int CompareTo(Product? other)
         {
             if (other == null) throw new ArgumentNullException("other");
-            return (int) Math.Ceiling(Price - other.Price);
+            return (int)Math.Ceiling(Price - other.Price);
         }
     }
 }
