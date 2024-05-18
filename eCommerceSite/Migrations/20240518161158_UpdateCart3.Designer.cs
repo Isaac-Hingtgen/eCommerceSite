@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceSite.Data;
 
@@ -11,9 +12,10 @@ using eCommerceSite.Data;
 namespace eCommerceSite.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240518161158_UpdateCart3")]
+    partial class UpdateCart3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,9 @@ namespace eCommerceSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("ProfileId")
+                        .IsUnique()
+                        .HasFilter("[ProfileId] IS NOT NULL");
 
                     b.ToTable("Carts");
                 });
@@ -85,9 +89,6 @@ namespace eCommerceSite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,8 +102,6 @@ namespace eCommerceSite.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.ToTable("Profiles");
                 });
@@ -125,19 +124,16 @@ namespace eCommerceSite.Migrations
             modelBuilder.Entity("eCommerceSite.Models.Entities.Cart", b =>
                 {
                     b.HasOne("eCommerceSite.Models.Entities.Profile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("eCommerceSite.Models.Entities.Cart", "ProfileId");
 
                     b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("eCommerceSite.Models.Entities.Profile", b =>
                 {
-                    b.HasOne("eCommerceSite.Models.Entities.Cart", "ShoppingCart")
-                        .WithMany()
-                        .HasForeignKey("CartId");
-
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("ShoppingCart")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

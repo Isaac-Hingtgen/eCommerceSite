@@ -1,5 +1,6 @@
 ﻿using eCommerceSite.Security;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eCommerceSite.Models.Entities
 {
@@ -10,6 +11,12 @@ namespace eCommerceSite.Models.Entities
         public string Name { get; set; }
         public string Pwd { get; set; }
         public byte[] Salt { get; set; }
+
+        public string? CartId { get; set; }
+        [ForeignKey("CartId")]
+        public Cart? ShoppingCart { get; set; }
+
+
 
         public Profile(string name, string pwd)
         {
@@ -23,6 +30,8 @@ namespace eCommerceSite.Models.Entities
         {
             return Pwd.Equals(Salts.HashPassword(pwd, Salt));
         }
+
+
 
     }
 }
