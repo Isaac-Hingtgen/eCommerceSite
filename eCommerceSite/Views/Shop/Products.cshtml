@@ -18,27 +18,27 @@
         background: 0 0;
         border: 0;
         border-radius: .25rem;
-    }
-
-    .offcanvas-body .nav-link {
         display: block;
         padding: .5rem 1rem;
         text-decoration: none;
         transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+        color: #D4403A;
     }
 </style>
 
 <script>
     $(function () {
-        $('#productImage').on('load', function () { 
-            $('#spinner').each(function () { $(this).hide() })
-        }
+        const headerHeight = $("header").height();
+        const categoryOffcanvasHeight = window.innerHeight;
+        $("div.category-offcanvas").css({ "height": categoryOffcanvasHeight, "visibility": "visible" })
+
+        $(".offcanvas-body .nav-link").removeClass("active")
+        var id = window.location.href.split("/").at(-1)
+        id = (id == 'Products') ? '#Any' : '#' + id;
+        console.log(id)
+        $(id).addClass("active")
     })
 
-    $(function () {
-        $(".offcanvas-body .nav-link").removeClass("active")     
-        $(this).addClass("active")
-    })
 
     function handleAddToCart(id) {
         var json = {
@@ -85,28 +85,28 @@
             <p class="navbar-brand mb-0" id="categories">@typeof(Categories).Name</p>
         </div>
         <div class="offcanvas-body">
-            <a class="nav-link text-black" asp-area="" asp-controller="Shop" 
+            <a class="nav-link" id="Any" asp-area="" asp-controller="Shop" 
                 asp-action="Products" asp-route-id="@null">All</a>
             <br />
             @{
                 foreach (string name in Enum.GetNames(typeof(Categories)))
                 {
-                    <a class="nav-link text-black" href="@Url.Action("Products", "Shop", new {id = name})">@name</a>
-                    <br />
+                        <a class="nav-link" id="@name" href="@Url.Action("Products", "Shop", new {id = name})">@name</a>
+                        <br />
                 }
             }
         </div>
     </div>
 
-    <div class="container d-flex flex-column overflow-auto p-4 m-0">
+    <div class="container d-flex flex-column overflow-auto p-4 m-0"">
         <div class="row row-cols-3 m-0">
             @foreach (Product product in Model)
             {
                 string img = (product.Image is not null) ? product.Image : "../../images/product.png";
                 <div class="p-3">
-                    <div class="card" style="width: 332px">
-                        <img class="card-img-top" id="spinner" src="../../images/spinner.gif" alt="Loading..." />
-                        <img class="card-img-top" id="productImage" src=@img alt="Product Image" onload="$('#spinner').each(function() { $(this).hide() })" />
+                    <div class="card">
+                        <img class="card-img-top" id="@product.Id" src="../../images/spinner.gif" alt="Loading..." />
+                        <img class="card-img-top" src=@img alt="Product Image" onload="document.getElementById(@product.Id).hidden = true"  />
                         <div class="card-body">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text">@product.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</p>

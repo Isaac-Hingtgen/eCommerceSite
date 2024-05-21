@@ -3,10 +3,6 @@
 
 // Write your JavaScript code.
 
-const headerHeight = $("header").height();
-const categoryOffcanvasHeight = window.innerHeight;
-$("div.category-offcanvas").css({ "height": categoryOffcanvasHeight })
-
 //$("div.shop-container").css({ "margin-left": $("div.category-offcanvas").width() })
 
 
