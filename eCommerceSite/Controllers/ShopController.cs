@@ -10,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using eCommerceSite.Migrations;
 
 namespace eCommerceSite.Controllers
 {
@@ -81,7 +82,24 @@ namespace eCommerceSite.Controllers
 
         public IActionResult ProfilePartial()
         {
-            return PartialView("_Profile");
+            string redirect = "/Shop/LoginSignupPartial";
+            if (User.Identity is not null && User.Identity.IsAuthenticated)
+            {
+                redirect = "/Shop/LogoutPartial";
+            }
+            return PartialView("_Profile", redirect);
+        }
+
+        public IActionResult LoginSignupPartial()
+        {
+            return PartialView("_LoginSignup");
+        }
+
+        public IActionResult LogoutPartial()
+        {
+            int profileId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Profile? user = DbContext.Profiles.FirstOrDefault(p => p.Id == profileId);
+            return PartialView("_Logout", user);
         }
 
         [HttpPost]

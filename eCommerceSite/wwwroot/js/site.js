@@ -7,8 +7,8 @@
 
 
 // add profile and cart partial view to _Layout.cshtml
-$('#profile').load("/Shop/ProfilePartial")
-$('#cart').load("/Shop/CartPartial")
+//$('#profile').load("/Shop/ProfilePartial")
+//$('#cart').load("/Shop/CartPartial")
 
 
 // back to top button

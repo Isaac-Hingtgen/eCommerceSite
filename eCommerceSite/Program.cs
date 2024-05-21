@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "profile-id";
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Shop/Login"; 
+        options.LoginPath = "/Shop/LoginSignupPartial"; 
     });
 
 var app = builder.Build();
