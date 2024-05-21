@@ -10,7 +10,8 @@
     <script>
          new WOW().init();
          function handleModalRerender() {
-           $('#cart').load('@Url.Action("CartPartial", "Shop")')
+            $('#cart').load('@Url.Action("CartPartial", "Shop")', () => $('#cartModal').modal('show'))
+           
          }
     </script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -53,7 +54,7 @@
                             <a class="nav-link text-dark" data-bs-toggle="collapse" href="#searchForm" role="button" aria-controls="searchForm" aria-expanded="false"><i class="fas fa-magnifying-glass"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="cart-button nav-link text-dark" data-bs-toggle="modal" data-bs-target="#cartModal" onclick="handleModalRerender()"><i class="fas fa-cart-shopping"></i></a>
+                            <a class="cart-button nav-link text-dark" onclick="handleModalRerender()"><i class="fas fa-cart-shopping"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="profile-button nav-link text-dark" data-bs-toggle="modal" data-bs-target="#profileModal"><i class="far fa-user"></i></a>

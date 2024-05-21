@@ -28,7 +28,6 @@
 
 <script>
     $(function () {
-        const headerHeight = $("header").height();
         const categoryOffcanvasHeight = window.innerHeight;
         $("div.category-offcanvas").css({ "height": categoryOffcanvasHeight, "visibility": "visible" })
 
@@ -50,10 +49,8 @@
             data: { "json": JSON.stringify(json) },
             url: "@Url.Action("AddToCart", "Shop")",
             success: function (data) {
-                if (data.status == "true") {
-                    $('#cart').load('@Url.Action("CartPartial", "Shop")')
-                    $('#addedModal').modal('show');
-                }
+                $('#addedModalLabel').text(data.message)
+                $('#addedModal').modal('show');
             },
             error: function (err) {
                 console.log(err);
@@ -63,10 +60,10 @@
 </script>
 
 <div class="modal fade mt-5" id="addedModal" tabindex="-1" role="dialog" aria-labelledby="addedModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addedModalLabel">Item Added to Cart</h5>
+                <h5 class="modal-title" id="addedModalLabel"></h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -91,8 +88,8 @@
             @{
                 foreach (string name in Enum.GetNames(typeof(Categories)))
                 {
-                        <a class="nav-link" id="@name" href="@Url.Action("Products", "Shop", new {id = name})">@name</a>
-                        <br />
+                            <a class="nav-link" id="@name" href="@Url.Action("Products", "Shop", new {id = name})">@name</a>
+                            <br />
                 }
             }
         </div>
@@ -105,8 +102,8 @@
                 string img = (product.Image is not null) ? product.Image : "../../images/product.png";
                 <div class="p-3">
                     <div class="card">
-                        <img class="card-img-top" id="@product.Id" src="../../images/spinner.gif" alt="Loading..." />
-                        <img class="card-img-top" src=@img alt="Product Image" onload="document.getElementById(@product.Id).hidden = true"  />
+                        <img class="card-img-top" src=@img alt="Product Image" onload="this.parentElement.querySelector('#spinner').hidden = true"  />
+                        <img class="card-img-top" id="spinner" src="../../images/spinner.gif" alt="Loading..." />
                         <div class="card-body">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text">@product.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</p>

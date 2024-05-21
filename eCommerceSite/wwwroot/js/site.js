@@ -16,6 +16,8 @@ let mybutton = document.getElementById("btn-back-to-top");
 window.onscroll = function () {
     scrollFunction();
 };
+
+const headerHeight = $("header").height();
 function scrollFunction() {
     if (
         document.body.scrollTop > headerHeight ||

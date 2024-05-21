@@ -4,10 +4,21 @@
 *@
 @{
     Cart cart = (Cart)Model;
+    bool moreThanOne = false;
 }
 
 <script>
-    function handleRemoveFromCart(id) {
+    function updatePrice(self, prodPrice) {
+        var inputForm = self.parentElement.querySelector('#form1');
+        var priceLabel = self.closest('#quantity').querySelector('p strong');
+        let USDollar = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+        priceLabel.textContent = USDollar.format(inputForm.value * prodPrice)
+    }
+
+    function handleRemoveFromCart(item, id) {
         var json = {
             productId: id
         };
@@ -18,10 +29,9 @@
             url: "@Url.Action("RemoveFromCart", "Shop")",
             success: function (data) {
                 if (data.status == "true") {
-                    $('#cart').load('@Url.Action("CartPartial", "Shop")', function() {
-                        $("#cartModal").modal('toggle');
-                    })
-                   
+                  item.style.display = "none"
+                  var itemCount = document.querySelector('#item-count');
+                  itemCount.textContent = parseInt(itemCount.textContent) - 1;
                 }
             },
             error: function (err) {
@@ -32,7 +42,7 @@
 </script>
 
 <div class="modal fade mt-5" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="cartModalLabel">Cart</h5>
@@ -42,15 +52,17 @@
             </div>
             <div class="modal-body">
                 <div class="card-header py-3">
-                    <h5 class="mb-0">Items - @cart.Products.Count()</h5>
+                    <h5 class="mb-0">Items - <span id="item-count">@cart.Products.Count()</span></h5>
                 </div>
                 <div class="card-body">
                     <!-- Single item -->
                     @foreach (Product product in cart.Products)
                     {
                         string img = (product.Image is not null) ? product.Image : "../../images/product.png";
-                        <div class="row">
-                            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                        string rowClass = "row" + ((moreThanOne) ? " mt-3" : "");
+                        <div class="@rowClass">
+                            @{ moreThanOne = true; }
+                            <div class="col-lg-2 col-md-6 col-sm-6 mb-4 mb-lg-0">
                                 <!-- Image -->
                                 <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                                     <img src=@img
@@ -62,39 +74,39 @@
                                 <!-- Image -->
                             </div>
 
-                            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                            <div class="col-lg-5 col-md-6 col-sm-6 mb-4 mb-lg-0">
                                 <!-- Data -->
                                 <p><strong>@product.Name</strong></p>
                                 <p>Category: @product.Category.ToString()</p>
                                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-sm me-1 mb-2" data-mdb-tooltip-init
-                                        title="Remove item" data-bs-dismiss="modal" onclick="handleRemoveFromCart(@product.Id)">
+                                        title="Remove item" onclick="handleRemoveFromCart(this.closest('.row'), @product.Id)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 <!-- Data -->
                             </div>
 
-                            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                            <div class="col-lg-5 col-md-12 col-sm-12 mb-4 mb-lg-0" id="quantity">
                                 <!-- Quantity -->
                                 <div class="d-flex mb-4" style="max-width: 300px">
                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-danger px-3 me-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown(); updatePrice(this, @product.Price)">
                                         <i class="fas fa-minus"></i>
                                     </button>
 
                                     <div data-mdb-input-init class="form-outline">
-                                        <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control" />
+                                        <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control" oninput="updatePrice(this, @product.Price)" />
                                         <label class="form-label" for="form1">Quantity</label>
                                     </div>
 
                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-danger px-3 ms-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp(); updatePrice(this, @product.Price)">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                                 <!-- Quantity -->
                                 <!-- Price -->
                                 <p class="text-start text-md-center">
-                                    <strong>@product.Price</strong>
+                                    <strong>@product.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</strong>
                                 </p>
                                 <!-- Price -->
                             </div>
@@ -102,7 +114,7 @@
                         <!-- Single item -->
                     }
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer pb-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-danger">Checkout</button>
                 </div>

@@ -64,16 +64,19 @@ namespace eCommerceSite.Controllers
             Product? product = await DbContext.Products.SingleOrDefaultAsync(p => p.Id == (productId));
             if (product is null ) // TODO: add quantities
             {
-                return Json(new { status = "false", message = "Product not available" });
+                return Json(new { status = "false", message = "Product not Available" });
             }
             
             Cart cart = await GetCart();
             System.Diagnostics.Debug.WriteLine(Request.Cookies["cart-id"]);
 
-            cart.Add(product);
+            if (!cart.Add(product))
+            {
+                return Json(new { status = "false", message = "Item Already in Cart" });
+            }
             await DbContext.SaveChangesAsync();
 
-            return Json(new { status = "true" });
+            return Json(new { status = "true", message = "Item Added to Cart" });
         }
 
         public IActionResult ProfilePartial()
