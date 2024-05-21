@@ -11,6 +11,84 @@
     }
 </script>
 
+<script>
+    function login() {
+        if ($("#loginPassword").val().length < 8 || $("#loginName").val().length < 6) {
+            document.getElementById("loginError").textContent = "Invalid credentials"
+            return;
+        }
+
+        var username = $("#loginName").val();
+        var password = $("#loginPassword").val();
+
+        var json = {
+            username: username,
+            password: password,
+        };
+
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            data: { "json": JSON.stringify(json) },
+            url: "@Url.Action("Login", "Shop")",
+            success: function (data) {
+                if (data.status == "true") {
+                    document.getElementById("loginError").textContent = "Login successful"
+                }
+                else if (data.status == "false") {
+                    document.getElementById("loginError").textContent = data.message
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>
+
+<script>
+    function register() {
+        if ($("#registerPassword").val().length < 8) {
+            document.getElementById("registerError").textContent = "Password must be 8 or more characters"
+            return;
+        }
+        if ($("#registerUsername").val().length < 6) {
+            document.getElementById("registerError").textContent = "Username must be 6 or more characters"
+            return;
+        }
+
+        if ($("#registerPassword").val() == $("#registerRepeatPassword").val()) {
+            var username = $("#registerUsername").val();
+            var password = $("#registerPassword").val();
+
+            var json = {
+                username: username,
+                password: password,
+            };
+
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                data: { "json": JSON.stringify(json) },
+                url: "@Url.Action("Register", "Shop")",
+                success: function (data) {
+                    if (data.status == "true") {
+                        document.getElementById("registerError").textContent = "Sign up successful"
+                    }
+                    else if (data.status == "false") {
+                        document.getElementById("registerError").textContent = data.message
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            document.getElementById("registerError").textContent = "Passwords must match"
+        }
+    }
+</script>
+
 <div class="modal fade mt-5" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -91,41 +169,6 @@
                                 </button>
                             </div>
 
-                            <script>
-                                function login() {
-                                    if ($("#loginPassword").val().length < 8 || $("#loginName").val().length < 6) {
-                                        document.getElementById("loginError").textContent = "Invalid credentials"
-                                        return;
-                                    }
-  
-                                    var username = $("#loginName").val();
-                                    var password = $("#loginPassword").val();
-
-                                    var json = {
-                                        username: username,
-                                        password: password,
-                                    };
-
-                                    $.ajax({
-                                        type: "post",
-                                        dataType: "json",
-                                        data: { "json": JSON.stringify(json) },
-                                        url: "@Url.Action("Login", "Shop")",
-                                        success: function (data) {
-                                            if (data.status == "true") {
-                                                document.getElementById("loginError").textContent = "Login successful"
-                                            }
-                                            else if (data.status == "false") {
-                                                document.getElementById("loginError").textContent = data.message
-                                            }
-                                        },
-                                        error: function (err) {
-                                            console.log(err);
-                                        }
-                                    });
-                                }
-                            </script>
-
                             <div class="text-center" id="loginError" style="color: #D4403A"></div>
 
                             <!-- Register buttons -->
@@ -187,48 +230,6 @@
                                 class="btn btn-danger btn-block mb-3" onclick="register()" >Sign up</button>
                             </div>
                             <div class="text-center" id="registerError" style="color: #D4403A"></div>
-                            <script>
-                                function register() {
-                                    if ($("#registerPassword").val().length < 8) {
-                                        document.getElementById("registerError").textContent = "Password must be 8 or more characters"
-                                        return;
-                                    }
-                                    if ($("#registerUsername").val().length < 6) {
-                                        document.getElementById("registerError").textContent = "Username must be 6 or more characters"
-                                        return;
-                                    }
-
-                                    if ($("#registerPassword").val() == $("#registerRepeatPassword").val()) {
-                                        var username = $("#registerUsername").val();
-                                        var password = $("#registerPassword").val();
-
-                                        var json = {
-                                            username: username,
-                                            password: password,
-                                        };
-
-                                        $.ajax({
-                                            type: "post",
-                                            dataType: "json",
-                                            data: { "json": JSON.stringify(json) },
-                                            url: "@Url.Action("Register", "Shop")",
-                                            success: function (data) {
-                                                if (data.status == "true") {
-                                                    document.getElementById("registerError").textContent = "Sign up successful"
-                                                }
-                                                else if (data.status == "false") {
-                                                    document.getElementById("registerError").textContent = data.message
-                                                }
-                                            },
-                                            error: function (err) {
-                                                console.log(err);
-                                            }
-                                        });
-                                    } else {
-                                        document.getElementById("registerError").textContent = "Passwords must match"
-                                    }
-                                }
-                            </script>
                         </form>
                     </div>
                 </div>
