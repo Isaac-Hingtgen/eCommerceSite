@@ -8,14 +8,28 @@
 }
 
 <script>
+    let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
+    $(
+        updateTotal()
+    )
+
     function updatePrice(self, prodPrice) {
         var inputForm = self.parentElement.querySelector('#form1');
         var priceLabel = self.closest('#quantity').querySelector('p strong');
-        let USDollar = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
         priceLabel.textContent = USDollar.format(inputForm.value * prodPrice)
+        updateTotal()
+    }
+
+    function updateTotal() {
+        var total = 0;
+        $('.card-body .row').each(function () {
+            total += parseFloat($(this).find('#price strong').text().substring(1))
+        })
+        $('#totalPrice strong span').text(USDollar.format(total))
     }
 
     function handleRemoveFromCart(item, id) {
@@ -105,7 +119,7 @@
                                 </div>
                                 <!-- Quantity -->
                                 <!-- Price -->
-                                <p class="text-start text-md-center">
+                                <p class="text-start text-md-center" id="price">
                                     <strong>@product.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</strong>
                                 </p>
                                 <!-- Price -->
@@ -115,6 +129,9 @@
                     }
                 </div>
                 <div class="modal-footer pb-0">
+                    <div id="totalPrice" class="justify-content-start w-50">
+                        <strong>Total: <span></span></strong>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-danger">Checkout</button>
                 </div>
