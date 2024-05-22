@@ -54,3 +54,19 @@ body {
     background-color: #D4403A;
     border-color: #D4403A;
 }
+
+.offcanvas-body .nav-link.active {
+    background-color: #D4403A;
+    color: white;
+}
+
+.offcanvas-body .nav-link {
+    background: 0 0;
+    border: 0;
+    border-radius: .25rem;
+    display: block;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    color: #D4403A;
+}

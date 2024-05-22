@@ -35,5 +35,22 @@ function backToTop() {
     }, 150, "swing")
 }
 
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+})
+
+function addImageSpinners() {
+    $('img').each(function () {
+        if (!this.complete) {
+            $(this).on('load', function () {
+                $(this).parent().find('#spinner').remove()
+            })
+            $(this).after("<img class='card-img-top' id='spinner' src='../../images/spinner.gif' alt='Loading...' />")
+        }
+    })
+}
+
+addImageSpinners();
 
 
