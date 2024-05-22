@@ -3,6 +3,7 @@
 *@
 @{
 }
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
     function clearErrors() {
@@ -104,9 +105,15 @@
             <div class="text-center mb-3">
                 <p>Sign in with:</p>
 
-                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
+                <div id="g_id_onload"
+                     data-client_id="834917429572-05lbg6eo6u4c2d6jq57u2sopjj68o729.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse">
+                </div>
+                <div class="g_id_signin" data-type="standard"></div>
+@* 
+                <div id="customBtn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
                     <i class="fab fa-google"></i>
-                </button>
+                </div> *@
 
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
                     <i class="fab fa-twitter"></i>
@@ -168,9 +175,9 @@
             <div class="text-center mb-3">
                 <p>Sign up with:</p>
 
-                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
+                <div id="customBtn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
                     <i class="fab fa-google"></i>
-                </button>
+                </div>
 
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-floating mx-1">
                     <i class="fab fa-twitter"></i>
